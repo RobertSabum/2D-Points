@@ -1,9 +1,8 @@
-import java.util.Comparator;
 import java.util.Vector;
 
 public class PointST<Value> {
 
-		private RedBlackBST<Point2D, Value> points;
+		private RedBlackBST<Point2D, Value> points; //Red black tree that holds points with Point2D as keys
 
     // construct an empty symbol table of points 
     public PointST(){
@@ -37,27 +36,41 @@ public class PointST<Value> {
 
     // all points in the symbol table 
     public Iterable<Point2D> points(){
-      Vector<Point2D> allpoints = new Vector<>();
-
-      return allpoints;
+      return points.keys();
 		}
 
     // all points that are inside the rectangle (or on the boundary) 
-    public Iterable<Point2D> range(RectHV rect){
+    public Iterable<Point2D> range(RectHV rect){//creates a vector and loops through the tree adding all points in range to the vector O(n)
       Vector<Point2D> pointsinrange = new Vector<>();
-
+      for(Point2D p : points()){
+        if(rect.contains(p)){
+          pointsinrange.add(p);
+        }
+      }
       return pointsinrange;
-
 		}
 
     // a nearest neighbor of point p; null if the symbol table is empty 
-    public Point2D nearest(Point2D p){
-      return p;
-		}
+    public Point2D nearest(Point2D p){//loops through tree and compares each point distance to current nearest point. uses distance squared to save time. O(n)
+      if(this.isEmpty()){//if there are no points
+        return null;
+      }
+      else{//if there are points
+        Point2D currentnearest =  points.min();
+        for(Point2D test : points()){
+          if(p.distanceSquaredTo(test) < p.distanceSquaredTo(currentnearest)){//if the distance of the testing point is less than the current nearest point
+            currentnearest = test;
+          }
+        }
+        return currentnearest;
+      }
+      
+    }
+    
 
     // unit testing (required)
     public static void main(String[] args){
-      
+    
 		}
 
 }

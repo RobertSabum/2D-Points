@@ -1,0 +1,75 @@
+import java.util.Vector;
+
+public class KDTreeST<Value> {
+
+		private KDTree<Point2D,Value> points; //Red black tree that holds points with Point2D as keys
+
+    // construct an empty symbol table of points 
+    public KDTreeST(){
+			points = new KDTree<Point2D,Value>();
+		}
+
+    // is the symbol table empty? 
+    public boolean isEmpty(){
+			return points.isEmpty();
+		}
+
+    // number of points
+    public int size(){
+			return points.size();
+		}
+
+    // associate the value val with point p
+    public void put(Point2D p, Value val){
+			points.put(p, val);
+		}
+
+    // value associated with point p 
+    public Value get(Point2D p){
+			return points.getValue(p);
+		}
+
+    // does the symbol table contain point p? 
+    public boolean contains(Point2D p){
+			return points.contains(p);
+		}
+
+    // all points in the symbol table 
+    public Iterable<Point2D> points(){
+      return points.keys();
+	}
+
+    // all points that are inside the rectangle (or on the boundary) 
+    public Iterable<Point2D> range(RectHV rect){//creates a vector and loops through the tree adding all points in range to the vector O(n)
+      Vector<Point2D> pointsinrange = new Vector<>();
+      for(Point2D p : points.keys()){
+        if(rect.contains(p)){
+          pointsinrange.add(p);
+        }
+      }
+      return pointsinrange;
+		}
+
+    // a nearest neighbor of point p; null if the symbol table is empty 
+    public Point2D nearest(Point2D p){//loops through tree and compares each point distance to current nearest point. uses distance squared to save time. O(n)
+      return points.nearest(p);
+    }
+    
+
+    // unit testing (required)
+    public static void main(String[] args){
+
+        KDTreeST<Integer> kd = new KDTreeST<>();
+        for(int i=0; i<100; i++){
+            Point2D p = new Point2D(Math.random(), Math.random());
+            kd.put(p, i);
+        }
+        System.out.println(kd.points());
+        System.out.println();
+        System.out.println(kd.nearest(new Point2D(0, 0)));
+        System.out.println();
+        RectHV rect = new RectHV(0, 0, 0.25, 0.25);
+        System.out.println(kd.range(rect));
+	}
+
+}

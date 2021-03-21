@@ -70,7 +70,17 @@ public class PointST<Value> {
 
     // unit testing (required)
     public static void main(String[] args){
-    
+      PointST<Integer> st = new PointST<>();
+        for(int i=0; i<100; i++){
+            Point2D p = new Point2D(Math.random(), Math.random());
+            st.put(p, i);
+        }
+        System.out.println(st.points());
+        System.out.println();
+        System.out.println(st.nearest(new Point2D(0, 0)));
+        System.out.println();
+        RectHV rect = new RectHV(0, 0, 0.25, 0.25);
+        System.out.println(st.range(rect));
 		}
 
 }

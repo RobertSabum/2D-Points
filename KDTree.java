@@ -1,4 +1,4 @@
-import java.util.Vector;
+import java.util.*;
 
 public class KDTree<Key extends Comparable<Key>, Value>{
 
